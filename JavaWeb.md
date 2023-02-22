@@ -1756,3 +1756,76 @@ out.write("<html>\r\n");
 
 
 #### 8.3 JSP基础语法
+
+任何语言都有自己的语法，JAVA中有，JSP中有。JSP作为JAVA技术的一种应用，它拥有一些自己扩充的语法（了解即可），JAVA所有语法都支持
+
+
+
++  JSP表达式
+
+```jsp
+ <%--JSP表达式
+ 作用：将程序的输出，输出到客户端
+   <%= 变量或者表达式%>
+ --%>
+  <%= new java.util.Date()%>
+
+```
+
+![image-20230222211439265](JavaWeb.assets/image-20230222211439265.png)
+
+访问页面结果：
+
+![image-20230222211453242](JavaWeb.assets/image-20230222211453242.png)
+
++  JSP脚本片段
+
+```xml
+<%--JSP脚本片段--%>
+  <%
+    int sum = 0;
+    for (int i = 0; i < 100; i++) {
+      sum += i;
+    }
+    out.println("<h1>sum="+sum+"</h1>");
+  %>
+```
+
+![image-20230222213051392](JavaWeb.assets/image-20230222213051392.png)
+
+
+
+**脚本片段的再实现**
+
+![image-20230222214021000](JavaWeb.assets/image-20230222214021000.png)
+
+不能定义同一个变量名，和java中一样
+
+
+
+```xml
+ <%
+      int x =10;
+      out.println(x);
+  %>
+
+  <p>这是一个JSP文档</p>
+  <%
+    int y = 10;
+    out.println(y);
+  %>
+ <hr>
+  <%--在代码嵌入HTML元素--%>
+  <%
+      for (int i = 0; i < 5; i++) {
+
+
+  %>
+ <h1>Hello,World  <%= i%></h1>
+  <%
+      } 
+  %>
+      <%--完整的循环体可以分段，如for循环中的花括号--%>
+```
+
+![image-20230222215030196](JavaWeb.assets/image-20230222215030196.png)
