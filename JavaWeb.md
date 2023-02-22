@@ -1113,6 +1113,8 @@ public class ImageServlet extends HttpServlet {
 }
 ```
 
+![image-20230220195329551](JavaWeb.assets/image-20230220195329551.png)
+
 ###### 4、重定向
 
 ![image-20230220195151870](JavaWeb.assets/image-20230220195151870.png)
@@ -1124,9 +1126,633 @@ public class RedirectServlet extends HttpServlet {
         /*
         resp.setHeader("Location","/r3/image");
         resp.setStatus(302);
+        这两行代码相当于下面这一行代码
         */
         resp.sendRedirect("/r3/image");
     }
 }
 ```
 
+![image-20230220195446424](JavaWeb.assets/image-20230220195446424.png)
+
+![image-20230220195414322](JavaWeb.assets/image-20230220195414322.png)
+
+重定向跳转到 /r3/image
+
+![image-20230220195537276](JavaWeb.assets/image-20230220195537276.png)
+
+==重定向和请求转发的区别==
+
++ 相同点：页面都会实现跳转
++ 不同点：
+  + 请求转发的时候，url不会产生变化  307
+  + 重定向时候，url地址栏会发生变化  302
+
+#### RequestTest 例子
+
+```java
+public class RequestTest extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        System.out.println("进入这个请求了");
+        //处理请求
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        System.out.println(username+ ":"+password);
+        //重定向时候一定注意 路径问题，404说明代码没问题，知识没找到，报错500代码存在错误
+        resp.sendRedirect("/r3/success.jsp");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+}
+```
+
+```xml
+<%--index.jsp--%>
+<html>
+<body>
+<h2>Hello World!</h2>
+
+<%--这里提交的路径L需要寻找到项目的路径--%>
+<%--{pageContext.request.contextPath}代表当前项目--%>
+<form action="${pageContext.request.contextPath}/login" method="get">
+    用户名：<input type="text" name="username"> <br>
+    密码：<input type="password" name="password"> <br>
+    <input type="submit">
+
+</form>
+</body>
+</html>
+```
+
+```xml
+<%--Success--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>Success</h1>
+</body>
+</html>
+```
+
+![image-20230220200056514](JavaWeb.assets/image-20230220200056514.png)
+
+输入用户名和密码，重定向至/r3/success
+
+#### 6.7 HttpServletRequest
+
+HttpServletRequest代表客户端的请求，用户通过Http协议访问服务器，HTTP请求中的所有信息会被封装到HttpServletRequest，通过这个HttpServletRequest的方法，获得客户端的所有信息
+
+```java
+ String getContextPath();
+ String getRemoteUser();
+```
+
+##### 1、获取前端传递的参数
+
+![image-20230220204910092](JavaWeb.assets/image-20230220204910092.png)
+
+
+
+##### 2、请求转发
+
+```java
+public class LoginServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        String[] hobbys = req.getParameterValues("hobbys");
+        System.out.println("=========================");
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(Arrays.toString(hobbys));
+        System.out.println("==========================");
+
+        //通过请求转发
+        req.getRequestDispatcher("E:\\LearningNotes\\JAVA前端\\javaweb\\代码\\javaweb-02-servlet\\request\\src\\main\\webapp\\success.jsp").forward(req,resp);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}
+
+```
+
+
+
+```xml
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>登录</title>
+</head>
+<body>
+<h1>登录</h1>
+
+<div style="text-align: center">
+    <%--这里表单所表示的意思，以post方式提交表单，提交到我们的login请求--%>
+    <form action="${pageContext.request.contextPath}/login" method="post">
+        用户名：<input type="text" name="username" required> <br>
+        密码:<input type="password" name="password"> <br>
+        爱好：
+        <input type="checkbox" name="hobby" value="女孩">女孩
+        <input type="checkbox" name="hobby" value="代码">代码
+        <input type="checkbox" name="hobby" value="唱歌">唱歌
+        <input type="checkbox" name="hobby" value="电影">电影
+
+        <br>
+        <input type="submit">
+    </form>
+
+</div>
+</body>
+</html>
+```
+
+ 请求转发时  报错404
+
+![image-20230221101203430](JavaWeb.assets/image-20230221101203430.png)
+
+后台倒是输出了内容
+
+![image-20230221101313702](JavaWeb.assets/image-20230221101313702.png)
+
+![image-20230221102702894](JavaWeb.assets/image-20230221102702894.png)
+
+而代码中寻找success.jsp文件目录 
+
+![image-20230221102908193](JavaWeb.assets/image-20230221102908193.png)
+
+不需要写成/r/success
+
+### 7 Cookie、Session
+
+#### 7.1 会话
+
+**会话**：用户打开一个浏览器，点击了很多超链接，访问了多个Web资源，关闭浏览器，这个过程可以称为会话
+
+**有状态会话：**一个同学来过教室，下次再来教室，我们会知道这个同学曾经来过
+
+可以在不同的方法调用间保持针对各个客户端的状态 。
+与客户端的联系必需被维持；通常开销较大 。
+有状态会话Bean会保存客户端的状态 。
+–你对ENTITY BEAN的数据操作会被容器维护起来，当其他的用户要用你正在使用的ENTITY BEAN时，里面的数据会被钝化到服务器的磁盘上，例如网上的购物车。
+
+
+
+一个网站，怎么证明浏览过？
+
+1、服务端给哭护短一个 “信件”，客户端下次访问服务端带上“信件”就可以了  cookie
+
+2、服务器登记浏览过了，下次浏览的时候服务器来匹配   session
+
+
+
+**无状态会话:**
+
+在不同方法调用间不保留任何状态 。
+事务处理必须在一个方法中结束 。
+通常资源占用较少；可以被共享(因为它是无状态的) 。
+无状态Bean不会"专门"保存客户端的状态----(需要强调“专门”是因为无状态会话Bean也会有成员变量，有成员变量就可以保存状态，但它不会专门为特定的客户端保存状态。)。
+----你对ENTITY BEAN的数据操作不会被容器维护，当其他的用户要用ENTITY BEAN时，里面的数据不
+会被钝化到服务器的磁盘上。也就是被保存起来。
+
+#### 7.2 保存会话的两种技术
+
+**cookie**
+
++ 客户端技术（响应，请求）
+
+**session**
+
++ 服务器技术，利用这个技术，可以保存用户的会话信息，我们可以把信息或者数据放在session中
+
+
+
+常见例子：网站登录后，下次不用再登录了
+
+
+
+#### 7.3 Cookie
+
+1、从请求中拿到cookie信息
+
+服务器响应给客户端cookie
+
+```java
+        Cookie[] cookies = req.getCookies();  //获得Cookie
+        cookie.getName()   //获得cookie中的key
+        cookie.getValue();  //获得key中的值
+		new Cookie("lastLoginTime", System.currentTimeMillis() + "");   //新建一个cookie
+		cookie.setMaxAge(24*60*60);  //设置cookie有效期
+        resp.addCookie(cookie);  //响应给客户端一个cookie
+```
+
+![image-20230221170324147](JavaWeb.assets/image-20230221170324147.png)
+
+**cookie一般会保存在本地的用户目录下appdata**
+
+==一个网站cookie是否存在上限？==
+
++ 一个cookie只能保存一个信息；
++ 一个web站点可以给浏览器发送多个cookie，最多存放20个cookie
++ 浏览器cookie上限大概为300个
++ cookie大小限制4kb
+
+
+
+删除COOKIE：
+
++ 不设置有效期，关闭浏览器，自动失效
++ 将有效期设置为0
+
+```java
+//添加cookie并设置存在有效期
+public class CookieDemo1 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //服务器，告诉你，你来的时间，把这个时间封装成为一个信件，下次来就知道了
+
+        resp.setHeader("Content-type", "text/html;charset=UTF-8");
+
+        //解决中文乱码
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
+
+        PrintWriter out = resp.getWriter();
+        //Cookie,服务器端从客户端获取
+        Cookie[] cookies = req.getCookies();  //这里返回数组，说明cookie可能存在多个
+
+        // 判断cookie是否存在
+        if (cookies!=null){
+            //如果存在怎么办
+            out.write("上次访问的时间是：");
+/*            for (Cookie cookie : cookies) {
+                
+            }*/
+            for (int i = 0; i < cookies.length; i++) {
+                Cookie cookie = cookies[i];
+                //获取cookie名字
+                if (cookie.getName().equals("lastLoginTime")){
+                    //获取cookie中的值
+                    cookie.getValue();
+                    long lastLoginTime = Long.parseLong(cookie.getValue());
+                    Date date = new Date(lastLoginTime);
+                    out.write(date.toLocaleString());
+
+                }
+            }
+
+        }else {
+            out.write("这是第一次访问");
+        }
+
+        //服务器给客户端响应cookie
+        Cookie cookie = new Cookie("lastLoginTime", System.currentTimeMillis() + "");
+        //cookie有效期为一天
+        cookie.setMaxAge(24*60*60);
+        resp.addCookie(cookie);
+
+    }
+
+
+}
+```
+
+```java
+//手动设置有效时间为0，保证和之前生成的cookie名字一致
+public class CookieDemo2 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //创建一个Cookie，名字必须要和要删除的名字一致
+        Cookie cookie = new Cookie("lastLoginTime", System.currentTimeMillis() + "");
+
+        //将cookie有效期设置为0
+        cookie.setMaxAge(0);
+        resp.addCookie(cookie);
+
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}
+```
+
+
+
+```java
+public class CookieDemo3 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //解决请求、响应乱码问题
+        resp.setHeader("Content-type", "text/html;charset=UTF-8");
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
+
+        Cookie[] cookies = req.getCookies();
+        PrintWriter out = resp.getWriter();
+        if (cookies != null){
+            out.write("上次访问时间是");
+            for (int i = 0; i < cookies.length; i++) {
+                Cookie cookie = cookies[i];
+                if (cookie.getName().equals("name")){
+//                    System.out.println(cookie.getValue());
+
+                    out.write(URLDecoder.decode(cookie.getValue(),"UTF-8"));
+                }
+            }
+        }else {
+            out.write("第一次访问");
+
+        }
+        //解决cookie乱码问题
+        Cookie cookie = new Cookie("name", URLEncoder.encode("胡晓飞","UTF-8"));
+//        Cookie cookie = new Cookie("name", "胡晓飞");
+        resp.addCookie(cookie);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}
+```
+
+#### 7.4 Session
+
+**什么是Session**
+
+服务器会给每一个用户（浏览器）创建一个Session对象
+
+一个Session独占一个浏览器，只要浏览器没有关闭，这个Session就存在
+
+用户登录之后，整个网站它都可以访问（长久保存信息，如购物车、用户信息）
+
+​                                                    ![image-20230221203155894](JavaWeb.assets/image-20230221203155894.png)   
+
+![image-20230221203219685](JavaWeb.assets/image-20230221203219685.png)
+
+**Session 存取数据**
+
++ 存
+
+```java
+public class SessionDemo1 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //解决乱码问题
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        //得到Session
+        HttpSession session = req.getSession();
+
+        //给Session存东西
+        session.setAttribute("name","胡晓飞");
+        //获取Session的ID
+        String id = session.getId();
+        //判断Session是不是新创建的
+        if (session.isNew()){
+            resp.getWriter().write("Session创建成功，ID是"+id);
+        }else {
+            resp.getWriter().write("Session已经在服务器中存在了，ID是"+id);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}
+```
+
+访问效果
+
+![image-20230221203743610](JavaWeb.assets/image-20230221203743610.png)
+
+![image-20230221203839642](JavaWeb.assets/image-20230221203839642.png)
+
+SessionID放在了Cookie里
+
+![image-20230221203951150](JavaWeb.assets/image-20230221203951150.png)
+
+可以看出 SessionID被创建在了Cookie中，那么Session在创建时做了一件什么事情？
+
+```java
+        //Session创建的时候做了什么事情
+        Cookie cookie = new Cookie("JSESSIONID", "5636EF63FA7DDAE9A82E7AEE961A5A9");
+        resp.addCookie(cookie);
+        Session就可以理解为属于Cookie的一类
+```
+
++ 取
+
+```java
+public class SessionDemo2 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        //得到Session
+        HttpSession session = req.getSession();
+
+        Person person = (Person) session.getAttribute("name");
+        System.out.println(person.toString());
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}
+//这里取得是一个Person对象，Session中可存储数据类型很多，只要是一个对象都可以进行存取
+```
+
+![image-20230221210227996](JavaWeb.assets/image-20230221210227996.png)
+
++ Session注销
+
+  1、手动注销Session
+
+```java
+public class SessionDemo3 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+
+        session.removeAttribute("name");
+        session.invalidate();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}
+```
+
+依次往Session创建——取Session——注销Session——取Session
+
+![image-20230221210736153](JavaWeb.assets/image-20230221210736153.png)
+
+如果再重新创建一个Session，得到的对象会是一个新的ID
+
+2、自动注销
+
+```xml
+ <!--设置Session默认的失效时间,以分钟为单位-->
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+```
+
+
+
+==Session和Cookie的区别==
+
++ Cookie是把用户的数据写给用户的浏览器，浏览器保存（可以保存多个）
++ Session把用户得数据写到用户独占Session中，服务器端保存（保存重要得信息，减少服务器资源的浪费）
++ Session对象由服务器创建；
+
+
+
+使用场景：
+
++ 保存一个登录用户的信息
++ 购物车
++ 在整个网站中经常会使用到的数据，我们将它保存在Session中
+
+![image-20230221213729316](JavaWeb.assets/image-20230221213729316.png)
+
+![image-20230221213836546](JavaWeb.assets/image-20230221213836546.png)
+
+![image-20230221213954273](JavaWeb.assets/image-20230221213954273.png)
+
+### 8 JSP
+
+#### 8.1 什么是JSP
+
+Java Server Pages： Java服务器端页面，也和Servlet一样，用于动态Web技术
+
+特点：
+
++ 写JSP就像在写HTML
++ 区别
+  + HTML只给用户提供静态的数据
+  + JSP页面中可以嵌入JAVA代码，为用户提供动态数据
+
+#### 8.2 JSP原理
+
+JSP怎么执行的？
+
++ 代码层面之前一直有在演示
+
++ 服务器内部工作
+
+  Tomcat中有一个work目录
+
+  IDEA中使用Tomcat的话会在IDEA中生成一个work目录
+
+  ```
+  C:\Users\LeeB\.IntelliJIdea\system\tomcat\539b1328-f720-42d8-948d-27760da36845\work\Catalina\localhost\jsc\org\apache\jsp
+  ```
+  
+  ![image-20230222101041838](JavaWeb.assets/image-20230222101041838.png)
+  
+  发现页面转换成了java程序！
+  
+  **浏览器向服务器发送请求，不管访问什么资源，其实都是在访问Servlet**
+  
+  JSP也会被转换成为一个java类
+  
+  JSP本质上就是一个Servlet
+  
+  ```java
+  //初始化
+  public void _jspInit() {
+    }
+  //销毁
+    public void _jspDestroy() {
+    }
+  //JSPService
+    public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)
+        throws java.io.IOException, javax.servlet.ServletException {
+        
+  ```
+
+1、判断请求
+
+2、内置一些对象
+
+```java
+    final javax.servlet.jsp.PageContext pageContext;   //页面上下文
+    javax.servlet.http.HttpSession session = null;  //Session
+    final javax.servlet.ServletContext application;  //ApplicationContext
+    final javax.servlet.ServletConfig config;  //config
+    javax.servlet.jsp.JspWriter out = null;   //out
+    final java.lang.Object page = this;  //page：当前
+    javax.servlet.jsp.JspWriter _jspx_out = null;
+    javax.servlet.jsp.PageContext _jspx_page_context = null;
+	HttpServletRequest request   //请求
+    HttpServletResponse response  //响应
+```
+
+3、 输出页面前增加的代码
+
+```java
+      response.setContentType("text/html");   //设置响应的页面类型
+      pageContext = _jspxFactory.getPageContext(this, request, response,
+      			null, true, 8192, true);
+      _jspx_page_context = pageContext;
+      application = pageContext.getServletContext();
+      config = pageContext.getServletConfig();
+      session = pageContext.getSession();
+      out = pageContext.getOut();
+      _jspx_out = out;
+```
+
+4、以上的这些对象我们可以在JSP页面直接使用
+
+![image-20230222155718047](JavaWeb.assets/image-20230222155718047.png)
+
+在JSP页面中：
+
+只要是JAVA代码就会原封不动的输出
+
+如果是HTML代码，就会被转换为
+
+```java
+out.write("<html>\r\n");
+```
+
+这样的格式 输出到前端。
+
+==.IntelliJIDEA文件发现不在C盘中解决办法==
+
+![image-20230222101133630](JavaWeb.assets/image-20230222101133630.png)
+
+
+
+
+
+#### 8.3 JSP基础语法
