@@ -1994,3 +1994,173 @@ jsp:include 拼接页面，本质还是3个
 
 ​		                                              ![image-20230223162204179](JavaWeb.assets/image-20230223162204179.png)   
 
+#### 8.5 JSP 9大内置对象及作用域
+
+
+
+```java
+    final javax.servlet.jsp.PageContext pageContext;   //页面上下文
+    javax.servlet.http.HttpSession session = null;  //Session
+    final javax.servlet.ServletContext application;  //ApplicationContext
+    final javax.servlet.ServletConfig config;  //config
+    javax.servlet.jsp.JspWriter out = null;   //out
+    final java.lang.Object page = this;  //page：当前
+    javax.servlet.jsp.JspWriter _jspx_out = null;
+    javax.servlet.jsp.PageContext _jspx_page_context = null;
+	HttpServletRequest request   //请求
+    HttpServletResponse response  //响应
+```
+
++ PageContext  存东西
+
+存数据
+
+```jsp
+<%
+
+    pageContext.setAttribute("name1","胡晓飞1");//保存的数据只在一个页面中有效
+    request.setAttribute("name2","胡晓飞2");//保存的数据只在一次请求中有效。请求转发会携带这个数据
+    session.setAttribute("name3","胡晓飞3");//保存的数据只在一次会话中有效，从打开浏览器到关闭服务器
+    application.setAttribute("name4","胡晓飞4");//保存的数据只在服务器中有效，从打开服务器到关闭服务器
+%>
+```
+
+应用场景：
+
++ request：客户端向服务器发送请求，产生的数据，用户看完就没有用了，比如新闻，用户看完没用的
++ session：客户端向服务器发送请求，产生的数据，用户用完一会儿还有用，比如购物车
++ application：客户端向服务器发送请求，产生的数据，一个用户用完了，其他用户还可能使用，比如：聊天数据
+
+取数据
+
+```jsp
+<%	
+	//从底层到高层（作用域）  page->request->session->application
+//jvm：双亲委派机制：
+    //从pageContext取出，我们通过寻找的方式来
+  String name1 = (String) pageContext.findAttribute("name1");  
+  String name2 = (String) pageContext.findAttribute("name2");  
+  String name3 = (String) pageContext.findAttribute("name3");  
+  String name4 = (String) pageContext.findAttribute("name4");
+  String name5 = (String) pageContext.findAttribute("name5");  //不存在
+%>
+
+<%--使用EL表达式输出  ${ } --%>
+<h1>取出的值为</h1>
+<h3>${name1}</h3>
+<h3>${name2}</h3>
+<h3>${name3}</h3>
+<h3>${name4}</h3>
+<h3>${name5}</h3>
+```
+
+
+
+<img src="JavaWeb.assets/image-20230223202008685.png" alt="image-20230223202008685" style="zoom:50%;" />
+
+name5 变量并不存在，通过EL表达式不会取出影响页面内容的数据，而通过==<%= %>==这个方式就会取出值为null的name5
+
+<img src="JavaWeb.assets/image-20230223202131188.png" alt="image-20230223202131188" style="zoom:50%;" />
+
+**所以取值一般都通过EL表达式取**
+
+<img src="JavaWeb.assets/image-20230223203436364.png" alt="image-20230223203436364" style="zoom:67%;" />
+
+**作用域**的关系体现：
+
+“胡晓飞1”和“胡晓飞2”保存在一个页面和一个请求中，通过另外一个页面访问这些数据是拿不到“胡晓飞1”和“胡晓飞2”的
+
+```jsp
+<%--创建一个新的JSP。访问先前存储的数据
+--%>
+<%
+  //从pageContext取出，我们通过寻找的方式来
+  String name1 = (String) pageContext.findAttribute("name1");
+  String name2 = (String) pageContext.findAttribute("name2");
+  String name3 = (String) pageContext.findAttribute("name3");
+  String name4 = (String) pageContext.findAttribute("name4");
+  String name5 = (String) pageContext.findAttribute("name5");
+%>
+<%--使用EL表达式输出  ${ } --%>
+<h1>取出的值为</h1>
+<h3>${name1}</h3>
+<h3>${name2}</h3>
+<h3>${name3}</h3>
+<h3>${name4}</h3>
+<h3>${name5}</h3>
+```
+
+访问结果：
+
+<img src="JavaWeb.assets/image-20230223203945480.png" alt="image-20230223203945480" style="zoom:50%;" />
+
+**作用域**
+
+```jsp
+<%--
+//scope 作用域
+    public static final int PAGE_SCOPE = 1;
+    public static final int REQUEST_SCOPE = 2;
+    public static final int SESSION_SCOPE = 3;
+    public static final int APPLICATION_SCOPE = 4;
+
+    public void setAttribute(String name, Object attribute, int scope) {
+        switch (scope) {
+            case 1:
+                this.mPage.put(name, attribute);
+                break;
+            case 2:
+                this.mRequest.put(name, attribute);
+                break;
+            case 3:
+                this.mSession.put(name, attribute);
+                break;
+            case 4:
+                this.mApp.put(name, attribute);
+                break;
+            default:
+                throw new IllegalArgumentException("Bad scope " + scope);
+        }
+
+    }
+--%>
+```
+
+```
+<% 上面和下面等效，但一般不建议使用，通常 使用下面方式创建/获取数据
+  pageContext.setAttribute("hello1","hello1",PageContext.SESSION_SCOPE);  
+  //session.setAttribute("hello1","hello1")
+  
+    pageContext.setAttribute("hello1","hello1",PageContext.PAGE_SCOPE);
+    //pageContext.setAttribute("name1","胡晓飞1");
+    
+    pageContext.setAttribute("hello1","hello1",PageContext.REQUEST_SCOPE);
+    //request.setAttribute("name2","胡晓飞2");
+    
+    pageContext.setAttribute("hello1","hello1",PageContext.APPLICATION_SCOPE);
+    //application.setAttribute("name4","胡晓飞4");
+%>
+```
+
+
+
+```xml
+<%
+  pageContext.forward("/index.jsp");
+  //Servlet后台代码形式
+    // request.getRequestDispatcher("/index.jsp").forward(request,response);
+%>
+```
+
+
+
++ Request   存东西
++ Response
++ Session  存东西
++ Application (ServletContext)   存东西
++ config (ServletConfig)
++ out
++ page
++ excepetion
+
+#### 8.6 JSP、JSTL标签
