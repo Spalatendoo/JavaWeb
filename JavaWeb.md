@@ -1829,3 +1829,168 @@ out.write("<html>\r\n");
 ```
 
 ![image-20230222215030196](JavaWeb.assets/image-20230222215030196.png)
+
+
+
+
+
++ JSP 声明
+
+  ```xml
+  <%!
+        static {
+            System.out.println("Loading Servlet!");
+        }
+        private int globalVar = 0;
+        public void lk(){
+            System.out.println("进入了方法lk");
+        }
+    %>
+  ```
+
+  
+
+在jsp源码文件中被放在了index_jsp 类中，作用域更高
+
+![image-20230223152125207](JavaWeb.assets/image-20230223152125207.png)
+
+JSP声明会被编译到JSP生成的JAVA的类中，而其他的就会被生成到_jspService（）方法中
+
+在JSP中，嵌入java代码即可
+
+
+
+```xml
+ <%-- EL表达，看着更舒服点？--%>
+ <% for (int i = 0; i < 5; i++) { %>
+    <%--<h1>Hello,World  <%= i%></h1>--%>
+     <h1>Hello,World  ${i}</h1>
+  <% } %>
+```
+
+
+
+总结
+
+```
+<%%> 片段
+<%=%>表达式输出值
+<%！%> 定义全局的方法
+<%--注释--%>   jsp的注释不会在客户端被显示
+```
+
+#### 8.4 JSP指令
+
+![image-20230223155609446](JavaWeb.assets/image-20230223155609446.png)
+
+==访问错误页面：==
+
++ 方法一
+
+```jsp
+<%@ page errorPage="error/500.jsp" %>
+```
+
+访问当前页面时，若发现错误，则跳转到error目录下的500.jsp页面
+
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<img src="../img/500错误.png" alt="500">
+</body>
+</html>
+```
+
+![image-20230223155141646](JavaWeb.assets/image-20230223155141646.png)
+
++ 方法二
+
+在web.xml文件配置访问发生错误跳转到指定错误页面
+
+```xml
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.jsp</location>
+    </error-page>
+    
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/500.jsp</location>
+    </error-page>
+```
+
+如此，方法一中指令就无需再写，也能实现页面错误跳转
+
+
+
+==导包==
+
+```jsp
+<%@page import="java.util.*" %>
+```
+
+写jsp语句时，可以直接new一个Date对象
+
+```jsp
+<%= new Date()%>
+```
+
+否则需要
+
+```jsp
+ <%= new java.util.Date()%>
+```
+
+![image-20230223155534493](JavaWeb.assets/image-20230223155534493.png)
+
+小细节：每次修改变更jsp内容时可以不重启TOMCAT,选择更新就可以
+
+![image-20230223161433703](JavaWeb.assets/image-20230223161433703.png)
+
+但修改web.xml时，需要重启Tomcat
+
+
+
+==页面拼接/合并==
+
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<html>
+<head>
+  <title>Title</title>
+</head>
+<body>
+<%-- <%@include 会将两个页面合二为一 --%>
+<%@include file="common/header.jsp"%>
+<h1>网页主体</h1>
+<%@include file="common/footer.jsp"%>
+
+<hr>
+
+<%--JSP标签
+jsp:include 拼接页面，本质还是3个
+--%>
+  <jsp:include page="/common/header.jsp"/>
+  <h1>网页主体</h1>
+  <jsp:include page="/common/footer.jsp"/>
+</body>
+</html>
+```
+
+区别体现：在header.jsp中声明一个变量i，jsp3.jsp页面通过==<%@include 会将两个页面合二为一==时，再声明一个i，会报错
+
+![image-20230223162052280](JavaWeb.assets/image-20230223162052280.png)
+
+​				页面报500错误
+
+​				而通过JSP标签声明变量i，并不会报错，页面可以正常显示
+
+
+
+​		                                              ![image-20230223162204179](JavaWeb.assets/image-20230223162204179.png)   
+

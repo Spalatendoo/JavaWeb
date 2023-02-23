@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--<%@page import="java.util.*" %>--%>
 <html>
   <head>
     <title>$Title$</title>
@@ -15,7 +16,7 @@
  作用：将程序的输出，输出到客户端
    <%= 变量或者表达式%>
  --%>
-  <%= new java.util.Date()%>
+  <%= new Date()%>
   <hr>
   <%--JSP脚本片段--%>
   <%
@@ -38,13 +39,19 @@
   %>
  <hr>
   <%--在代码嵌入HTML元素--%>
-  <%
-      for (int i = 0; i < 5; i++) {
+  <% for (int i = 0; i < 5; i++) { %>
+    <%--<h1>Hello,World  <%= i%></h1>--%>
+     <h1>Hello,World  ${i}</h1>
+  <% } %>
 
-
-  %>
- <h1>Hello,World  <%= i%></h1>
-  <%
+  <hr>
+  <%!
+      static {
+          System.out.println("Loading Servlet!");
+      }
+      private int globalVar = 0;
+      public void lk(){
+          System.out.println("进入了方法lk");
       }
   %>
 
