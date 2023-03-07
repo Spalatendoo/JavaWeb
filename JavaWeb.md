@@ -2163,4 +2163,226 @@ name5 变量并不存在，通过EL表达式不会取出影响页面内容的数
 + page
 + excepetion
 
-#### 8.6 JSP、JSTL标签
+#### 8.6 JSP、JSTL标签、EL表达式
+
+```xml
+ <!--JSTL表达式的依赖-->
+        <dependency>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>jstl-api</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/taglibs/standard -->
+
+<!--standard标签依赖-->
+
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+```
+
+**EL表达式： $( )**
+
++ 获取数据
+
++ 执行运算
+
++ 获取web开发的常用对象
+
+  
+
+**JSP标签**
+
+```jsp
+<%--jsp:include page=""--%>
+<jsp:forward page="/jsptag2.jsp">
+    <jsp:param name="name" value="zhangxiaonan"/>
+    <jsp:param name="age" value="12"/>
+</jsp:forward>
+```
+
+**JSTL表达式**
+
+JSTL标签库的使用就是为了弥补HTML标签的不足，它自定义许多标签，可以供我们使用，标签的功能和java代码一样
+
++ 核心标签（掌握部分）
+
+  ```jsp
+  <%--引入JSTL核心标签库，我们才能使用JSTL标签  "c"代表core 核心--%>
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+  ```
+
+  <img src="JavaWeb.assets/image-20230307160454708.png" alt="image-20230307160454708" style="zoom: 80%;" />
+
+  + ​	
+
+**JSTL使用步骤：**
+
++ 引入对应的taglib
++ 使用其中方法
++ 在TomCat中也需要引入jstl的包，否则会报错：JSTL解析错误
+
+```jsp
+<body>
+<h4>if测试</h4>
+<hr>
+<form action="coreif.jsp" method="get">
+    <%--EL表达式获取表单中的数据
+    ${param.参数名}}
+    --%>
+    <input type="text" name="username" value="${param.username}">
+    <input type="submit" value="登录">
+</form>
+
+<%--判断如果提交的用户名是管理员，则登录成功--%>
+<%--
+<%
+if (request.getParameter("username").equals("admin")){
+    out.print("登录成功");
+}
+%>
+--%>
+<c:if test="${param.username == 'admin'}" var="isAdmin" >
+    <c:out value="管理员欢迎您！" />
+</c:if>
+<c:out value="${isAdmin}"></c:out>
+</body>
+```
+
+<img src="JavaWeb.assets/image-20230307164027114.png" alt="image-20230307164027114" style="zoom:67%;" />
+
+```jsp
+<body>
+<%--定义一个变量score，值为85--%>
+<c:set var="score" value="85"/>
+<c:choose>
+  <c:when test="${score >=90}">
+    你的成绩为优秀
+  </c:when>
+  <c:when test="${score >= 80}">
+    你的成绩还不错
+  </c:when>
+</c:choose>
+</body>
+```
+
+<img src="JavaWeb.assets/image-20230307163959326.png" alt="image-20230307163959326" style="zoom:67%;" />
+
+
+
+```jsp
+<body>
+<%
+  ArrayList<String> people = new ArrayList<>();
+  people.add(0,"zhangsan");
+  people.add(1,"wangwu");
+  people.add(2,"lisi");
+  people.add(3,"zhaoqi");
+  request.setAttribute("list",people);
+%>
+
+<%--
+var ，每一次遍历出来的变量
+items ， 要遍历的对象
+begin , 哪里开始
+end , 到哪里
+step , 步长
+--%>
+<c:forEach var="people" items="${list}">
+  <c:out value="${people}"/><br>
+</c:forEach>
+
+<hr>
+<c:forEach begin="1" end="3" step="2" var="people" items="${list}">
+  <c:out value="${people}"></c:out>
+</c:forEach>
+</body>
+```
+
+<img src="JavaWeb.assets/image-20230307170022830.png" alt="image-20230307170022830" style="zoom:67%;" />
+
+
+
++ 格式化标签
++ SQL标签
++ XML标签
+
+#### 8.7 JavaBean
+
+实体类
+
+JavaBean有特定得写法：
+
++ 必须有一个无参构造
+
++ 属性必须私有化
+
++ 必须有对应得get/set方法：
+
+  一般用来和数据库得字段做映射 ORM
+
+  ORM： 对象关系映射
+
+  + 表——> 类
+  + 字段——> 属性
+  + 行记录——> 对象
+
+
+
+  people表
+
+| id   | name          | age  | address |
+| ---- | ------------- | ---- | ------- |
+| 1    | huxiaofei     | 24   | 西安    |
+| 2    | maxiaonan     | 23   | 西安    |
+| 3    | zhangxiaoming | 25   | 西安    |
+
+  
+
+```java
+class people{
+    private int id;
+    private String name;
+    private int age;
+    private String address;
+}
+
+class A{
+    new people(1,"huxiaofei",24,"西安");
+    new people(1,"maxiaonan",23,"西安");
+    new people(1,"zhangxiaoming",25,"西安");
+}
+```
+
+  
+
+  
+
+```jsp
+<body>
+<%
+//    People people = new People();
+//    people.setAddress("西安");
+//    people.setId(1);
+//    people.setAge(24);
+//    people.setName("huxiaofei");
+    
+  
+%>
+<jsp:useBean id="people" class="com.lk.pojo.People" scope="page"/>
+<jsp:setProperty name="people" property="address" value="西安"/>
+<jsp:setProperty name="people" property="id" value="1"/>
+<jsp:setProperty name="people" property="age" value="24"/>
+<jsp:setProperty name="people" property="name" value="huxiaofei"/>
+
+姓名：<jsp:getProperty name="people" property="name"/> <br>
+id：<jsp:getProperty name="people" property="id"/>  <br>
+年龄：<jsp:getProperty name="people" property="age"/> <br>
+地址：<jsp:getProperty name="people" property="address"/>
+</body>
+```
+
+![image-20230307204309470](JavaWeb.assets/image-20230307204309470.png)
