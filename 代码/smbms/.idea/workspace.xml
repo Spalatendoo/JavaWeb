@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="smbms:war" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6ddcf143-1c12-471d-a0e1-aa19c7f58194" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/dao/BaseDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/dao/User/UserDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/dao/User/UserDaoimpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/filter/CharacterEncodingFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/filter/SysFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/service/user/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/service/user/UserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/servlet/user/LoginServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/servlet/user/LogoutServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/util/Constants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/My97DatePicker.htm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/WdatePicker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/calendar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/lang/en.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/lang/zh-cn.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/lang/zh-tw.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/skin/WdatePicker.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/skin/datePicker.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/skin/default/datepicker.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/skin/default/img.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/skin/whyGreen/bg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/skin/whyGreen/datepicker.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/calendar/skin/whyGreen/img.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/public.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/error.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/buy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/clock.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/formBg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/gys.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/home.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/leftBg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/loginBg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/login_bg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/login_img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/mm.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/read.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/schu.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/search.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/tc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/tianjia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/time.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/xiugai.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/y.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/yh.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/images/zd.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/billadd.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/billlist.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/billmodify.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/billview.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/common.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/jquery-1.8.3.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/provideradd.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/providerlist.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/providermodify.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/providerview.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/pwdmodify.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/rollpage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/time.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/useradd.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/userlist.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/usermodify.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/userview.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/billadd.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/billlist.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/billmodify.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/billview.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/common/foot.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/common/head.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/error.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/frame.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/provideradd.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/providerlist.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/providermodify.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/providerview.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/pwdmodify.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/rollpage.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/useradd.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/userlist.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/usermodify.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/userview.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaWeb.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaWeb.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/filter/CharacterEncodingFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/filter/CharacterEncodingFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/filter/SysFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/filter/SysFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/listener/OnlineCountListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/listener/OnlineCountListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/listener/TestPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/listener/TestPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/servlet/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/servlet/LoginServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/servlet/LoginoutServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/servlet/LoginoutServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/servlet/ShowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/servlet/ShowServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/util/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/src/main/java/com/lk/util/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/web/Login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/web/Login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/web/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/web/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/web/error.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/web/error.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/web/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/web/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javaweb-filter/web/sys/success.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../javaweb-filter/web/sys/success.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javawebjdbc/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../javawebjdbc/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javawebjdbc/src/main/java/com/lk/test/TestJDBC.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javawebjdbc/src/main/java/com/lk/test/TestJDBC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javawebjdbc/src/main/java/com/lk/test/Testdbc3.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javawebjdbc/src/main/java/com/lk/test/Testdbc3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../javawebjdbc/src/main/java/com/lk/test/Testjdbc2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../javawebjdbc/src/main/java/com/lk/test/Testjdbc2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/pojo/bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/pojo/Bill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/pojo/provider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/pojo/Provider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/pojo/role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/pojo/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/pojo/user.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/pojo/User.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2MkscB9gRGeD0JUAaRM22zQb93f" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/LearningNotes/JAVA前端/javaweb/代码/smbms/src/main/webapp",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\LearningNotes\JAVA前端\javaweb\代码\smbms\src\main\webapp" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\LearningNotes\JAVA前端\javaweb\代码\smbms\src\main\webapp\jsp" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.71">
+    <configuration name="UserServiceImpl" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="smbms" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lk.service.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lk.service.user" />
+      <option name="MAIN_CLASS_NAME" value="com.lk.service.user.UserServiceImpl" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceImpl.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="smbms" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lk.service.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lk.service.user" />
+      <option name="MAIN_CLASS_NAME" value="com.lk.service.user.UserServiceImpl" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceimpl" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="smbms" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lk.service.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lk.service.user" />
+      <option name="MAIN_CLASS_NAME" value="com.lk.service.user.UserServiceimpl" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceimpl.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="smbms" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lk.service.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lk.service.user" />
+      <option name="MAIN_CLASS_NAME" value="com.lk.service.user.UserServiceimpl" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tomcat 9.0.71" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.71" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="smbms:war">
+          <settings>
+            <option name="CONTEXT_PATH" value="/smbms" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="11c76a76-7781-40e0-954f-032090535bc5" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="51496" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="smbms:war" />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.UserServiceImpl" />
+      <item itemvalue="JUnit.UserServiceImpl.test" />
+      <item itemvalue="JUnit.UserServiceimpl" />
+      <item itemvalue="JUnit.UserServiceimpl.test" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.71" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.UserServiceImpl.test" />
+        <item itemvalue="JUnit.UserServiceImpl" />
+        <item itemvalue="JUnit.UserServiceimpl" />
+        <item itemvalue="JUnit.UserServiceimpl.test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6ddcf143-1c12-471d-a0e1-aa19c7f58194" name="Changes" comment="" />
+      <created>1678322993039</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678322993039</updated>
+      <workItem from="1678322995235" duration="22147000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ClassNotFoundException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

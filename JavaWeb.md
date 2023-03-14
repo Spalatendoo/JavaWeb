@@ -2386,3 +2386,995 @@ id：<jsp:getProperty name="people" property="id"/>  <br>
 ```
 
 ![image-20230307204309470](JavaWeb.assets/image-20230307204309470.png)
+
+### 9 MVC三层架构
+
+Model View Controller  模型 视图 控制器
+
+
+
+**早些年的开发架构**
+
+![image-20230307205210119](JavaWeb.assets/image-20230307205210119.png)
+
+用户直接访问控制层，控制层就可以直接操作数据库
+
+```
+servlet——增删改查语句——操作数据库
+弊端：程序臃肿，不利于维护，    servlet的代码中：处理请求，响应，视图跳转，处理JDBC，处理业务代码，处理逻辑代码
+```
+
+**9.1 三层架构**
+
+![image-20230307210055466](JavaWeb.assets/image-20230307210055466.png)
+
+==**Model**：==
+
++ 业务处理：业务逻辑（Service）
++ 数据持久层：CRUD(Dao)
+
+==View==：
+
++ 展示数据
++ 提供链接发起Servlet请求
+
+==Controller==（Servlet）
+
++ 接收用户请求：(Request Session)
++ 交给业务层处理对应的代码
++ 控制视图的挑战
+
+```
+1 | 登录——>接收用户的登录请求——>处理用户的请求（获取用户登录的参数,username password） ————> 交给业务层处理登录业务(判断用户名和密码是否正确)————> Dao层查询用户名和密码是否正确 ————> 数据库
+```
+
+
+
+### 10 过滤器Filter
+
+Filter：用来过滤网站的数据：
+
++ 处理中文的乱码
+
++ 登陆验证
+
+  ![image-20230307214724330](JavaWeb.assets/image-20230307214724330.png)
+
++ Filter开发步骤：
+
+  + 1 导包
+
+  + 2 编写过滤器
+
+    不要导错包
+
+    ![image-20230308135358018](JavaWeb.assets/image-20230308135358018.png)
+
+实现Filter接口，重写对应的方法即可
+
+```java
+public class CharacterEncodingFilter implements Filter {
+    //初始化  web服务器启动就已经初始化了
+    public void init(FilterConfig filterConfig) throws ServletException {
+        System.out.println("CharacterEncodingFilter初始化");
+    }
+
+
+    /*
+    过滤器中的所有代码，在过滤特定请求的时候都会执行
+    必须要让过滤器继续执行   chain.doFilter(request,response);
+    *
+    *
+    */
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)throws IOException,ServletException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        System.out.println("CharacterEncodingFilter 执行前...");
+        chain.doFilter(request,response);  //让我们的请求继续走，如果不写，程序到这里就被拦截停止
+        System.out.println("CharacterEncodingFilter 执行后...");
+    }
+    //销毁
+    public void destroy(){
+        System.out.println("CharacterEncodingFilter销毁");
+    }
+}
+```
+
+Servlet测试，“你好”显示乱码，通过实现的Filter将乱码过滤掉
+
+```java
+public class ShowServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+/*        resp.setCharacterEncoding("utf-8");
+        resp.setHeader("Content-type","text/html;charset=UTF-8");*/
+        resp.getWriter().write("你好");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}
+```
+
+Servlet 和 Filter 都要在web.xml文件中配好
+
+```xml
+    <servlet>
+        <servlet-name>ShowServlet</servlet-name>
+        <servlet-class>com.lk.servlet.ShowServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>ShowServlet</servlet-name>
+        <url-pattern>/servlet/Show</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ShowServlet</servlet-name>
+        <url-pattern>/Show</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>com.lk.filter.CharacterEncodingFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/servlet/*</url-pattern>
+    </filter-mapping>
+</web-app>
+```
+
+<img src="JavaWeb.assets/image-20230308140151859.png" alt="image-20230308140151859" style="zoom:67%;" />
+
+
+
+
+
+### 11 **监听器**
+
+实现一个监听器的接口（有挺多种方法）
+
+编写一个监听器：实现监听器的接口——> web.xml中注册配置监听器
+
++ 实现接口
+
+  ```java
+  public class OnlineCountListener implements HttpSessionListener {
+  //    创建session监听
+      //一旦创建一个session 就会触发一次这个事件
+      public void sessionCreated(HttpSessionEvent se) {
+          ServletContext ctx = se.getSession().getServletContext();
+          System.out.println(se.getSession().getId());
+          Integer onlineCount = (Integer) ctx.getAttribute("OnlineCount");
+  
+          if (onlineCount == null){
+              onlineCount = new Integer(1);
+          }else {
+              int count = onlineCount.intValue();
+              onlineCount = new Integer(count + 1);
+          }
+  
+          ctx.setAttribute("OnlineCount",onlineCount);
+      }
+  //销毁session监听
+      //一旦销毁session就会触发一次这个事件
+      public void sessionDestroyed(HttpSessionEvent se) {
+          ServletContext ctx = se.getSession().getServletContext();
+          se.getSession().invalidate(); //手动销毁session
+          Integer onlineCount = (Integer) ctx.getAttribute("OnlineCount");
+  
+          if (onlineCount == null){
+              onlineCount = new Integer(0);
+          }else {
+              int count = onlineCount.intValue();
+              onlineCount = new Integer(count - 1);
+          }
+  
+          ctx.setAttribute("OnlineCount",onlineCount);
+      }
+  }
+  ```
+
+  
+
++ 注册监听器
+
+```xml
+    <listener>
+        <listener-class>com.lk.listener.OnlineCountListener</listener-class>
+    </listener>
+```
+
+
+
+
+
+### 12 过滤器、监听器常见应用
+
+==监听器== 在GUI监听关闭事件
+
+```java
+public class TestPanel {
+    public static void main(String[] args) {
+        Frame frame = new Frame("中秋快乐"); //新建一个窗体
+        Panel panel = new Panel(null); //面板
+        frame.setLayout(null);  //设置窗体布局
+
+        frame.setBounds(300,300,500,500);
+        frame.setBackground(new Color(0,0,255)); //设置背景颜色
+
+        panel.setBounds(50,50,300,300);
+        panel.setBackground(new Color(0,255,0));  //设置背景颜色
+
+        frame.add(panel);
+        frame.setVisible(true);
+
+        //监听事件，监听关闭事件
+ /*       frame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                System.out.println("打开");
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println("关闭Ing");
+                System.exit(0);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                System.out.println("关闭ed");
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                System.out.println("激活");
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                System.out.println("未激活");
+
+            }
+        });*/
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                
+            }
+        });
+
+
+
+    }
+
+```
+
+通过鼠标点击，监控激活、关闭等状态
+
+
+
+==Filter实现权限拦截==
+
+1. 用户登录后，向Session种放入用户的数据
+
+2.  进入主页的时候要判断用户是否已经登录（在Filter中实现）
+
+   ```java
+   public class SysFilter implements Filter {
+       @Override
+       public void init(FilterConfig filterConfig) throws ServletException {
+   
+       }
+   
+       @Override
+       public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+           // ServletRequest  HttpServletRequest
+           HttpServletRequest request1 = (HttpServletRequest) servletRequest;
+           HttpServletResponse response1 = (HttpServletResponse) servletResponse;
+   
+           Object user_session = request1.getSession().getAttribute(Constant.USER_SESSION);
+           if (user_session == null){
+               response1.sendRedirect("/error.jsp");
+           }
+   
+           filterChain.doFilter(servletRequest,servletResponse);
+   
+       }
+   
+       @Override
+       public void destroy() {
+   
+       }
+   }
+   ```
+
+   
+
+![image-20230308163715358](JavaWeb.assets/image-20230308163715358.png)
+
+
+
+### 13 JDBC
+
+#### 13.1 java连接、操作数据库
+
+<img src="JavaWeb.assets/image-20230308165620141.png" alt="image-20230308165620141" style="zoom:67%;" />
+
+**需要 jar 包的支持：**
+
++ java.sql
++ javax.sql
++ mysql-connecter-java ..  链接驱动
+
+
+
++ 实验环境搭建：
+
+```mysql
+CREATE TABLE users(
+	id INT PRIMARY KEY,
+	`name` VARCHAR(40),
+	`password` VARCHAR(40),
+	email VARCHAR (60),
+	birthday DATE 
+);
+
+INSERT INTO users(id,`name`,`password`,email,birthday)
+VALUES(1,'张三','1234','zs@qq.com','2000-01-01');
+INSERT INTO users(id,`name`,`password`,email,birthday)
+VALUES(2,'李四','1234','ls@qq.com','2000-01-01');
+INSERT INTO users(id,`name`,`password`,email,birthday)
+VALUES(3,'王五','1234','ww@qq.com','2000-01-01');
+INSERT INTO users(id,`name`,`password`,email,birthday)
+VALUES(4,'老六','1234','ll@qq.com','2000-01-01');
+
+SELECT * FROM users
+```
+
++ 导入数据库依赖
+
+```xml
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.47</version>
+    </dependency>
+```
+
++ IDEA中连接数据库
+
+![image-20230308190135284](JavaWeb.assets/image-20230308190135284.png)
+
++ JDBC固定步骤
+
+1 加载驱动
+
+2 连接数据库
+
+3 向数据库发送SQL的对象statement CRUD
+
+4 编写SQL
+
+5 执行SQL
+
+6 关闭连接
+
+```java
+public class TestJDBC {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        //获取配置信息
+        //useUnicode = true &characterEncoding=utf-8 解决中文乱码
+        String url = "jdbc:mysql://localhost:3306/jdbc?useUnicode = true  & useSSL = true";
+        String username = "root";
+        String password = "root";
+
+        // 1加载驱动
+        Class.forName("com.mysql.jdbc.Driver");
+        //2连接数据库  代表数据库
+        Connection connection = DriverManager.getConnection(url, username, password);
+        //3像数据库发送SQL的对象Statement
+        Statement statement = connection.createStatement();
+
+        //4 编写SQL
+        String sql = "select * from users";
+
+        //5 执行查询SQL 返回一个ResultSet
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()){
+            System.out.println("id = " + resultSet.getObject("id"));
+            System.out.println("name = " + resultSet.getObject("name"));
+            System.out.println("password = " + resultSet.getObject("password"));
+            System.out.println("email = " + resultSet.getObject("email"));
+            System.out.println("birthday = " + resultSet.getObject("birthday"));
+        }
+
+        //6 关闭连接，释放资源 （原则——先开后关）
+        resultSet.close();
+        statement.close();
+        connection.close();
+
+    }
+}
+```
+
+
+
+预编译SQL
+
+```mysql
+public class TestJDBC {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        //获取配置信息
+        //useUnicode = true &characterEncoding=utf-8 解决中文乱码
+        String url = "jdbc:mysql://localhost:3306/jdbc?useUnicode = true  & useSSL = true";
+        String username = "root";
+        String password = "root";
+
+        // 1加载驱动
+        Class.forName("com.mysql.jdbc.Driver");
+        //2连接数据库  代表数据库
+        Connection connection = DriverManager.getConnection(url, username, password);
+        //3像数据库发送SQL的对象Statement
+        Statement statement = connection.createStatement();
+
+        //4 编写SQL
+        String sql = "select * from users";
+
+        //5 执行查询SQL 返回一个ResultSet
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()){
+            System.out.println("id = " + resultSet.getObject("id"));
+            System.out.println("name = " + resultSet.getObject("name"));
+            System.out.println("password = " + resultSet.getObject("password"));
+            System.out.println("email = " + resultSet.getObject("email"));
+            System.out.println("birthday = " + resultSet.getObject("birthday"));
+        }
+
+        //6 关闭连接，释放资源 （原则——先开后关）
+        resultSet.close();
+        statement.close();
+        connection.close();
+
+    }
+}
+```
+
+#### 13.2 事务
+
+要么都成功，要么都失败
+
+```
+开启事务
+事务提交  commit()
+事务回滚  rollback()
+关闭事务
+
+
+```
+
+
+
+Junit单元测试
+
+```xml
+依赖
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+    </dependency>
+```
+
+所有方法可直接测试，不用再new一个类，再调用方法
+
+<img src="JavaWeb.assets/image-20230308193034507.png" alt="image-20230308193034507" style="zoom:67%;" />
+
+@Test 只有在方法上有效，只要加了这个注解方法，就可以直接运行
+
+
+
+
+
+搭建一个环境测试事务
+
+```java
+public class Testdbc3 {
+    @Test
+    public void test()  {
+        //获取配置信息
+        //useUnicode = true &characterEncoding=utf-8 解决中文乱码
+        String url = "jdbc:mysql://localhost:3306/jdbc?useUnicode = true  & useSSL = true";
+        String username = "root";
+        String password = "root";
+        Connection connection = null;
+        // 1加载驱动
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+
+        //2连接数据库  代表数据库
+        connection = DriverManager.getConnection(url, username, password);
+        //3 通知数据库开启事务 false 开启
+        connection.setAutoCommit(false);
+        String sql1 = "update account set money = money -100 where name = 'A'";
+        connection.prepareStatement(sql1).executeUpdate();
+
+        //制造错误
+       // int i = 1/0;
+        String sql2 = "update account set money = money +100 where name = 'B'";
+        connection.prepareStatement(sql2).executeUpdate();
+
+        connection.commit();  //以上两条SQL都执行成功了，就提交事务
+        System.out.println("success");
+    }catch (Exception e) {
+            try {
+            //如果出现异常，通知数据库回滚事务
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+    }finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+}
+```
+
+报错 1/0前 A账户先减少100， 1/0后B账户再增加100，如果不开启事务，报错后，A账户少100但B账户不变，开启事务后，1/0报错，A和B账户金额都不变，即要么同时成功，要么同时失败
+
+
+
+### 14 SMBMS
+
+![image-20230309083744717](JavaWeb.assets/image-20230309083744717.png)
+
+<img src="JavaWeb.assets/image-20230309084503265.png" alt="image-20230309084503265" style="zoom:80%;" />
+
+
+
+项目 如何搭建？
+
+考虑使不使用maven？ ——依赖/jar包
+
+
+
+#### 14.1 项目搭建
+
+##### **1 搭建一个maven web项目**
+
+##### **2 配置Tomcat**
+
+##### **3 测试项目是否能够跑起来**
+
+##### **4 导入项目中会遇到的jar包**
+
+​	jsp Servlet mysql驱动
+
+##### **5 创建包项目结构**
+
+![image-20230309094404067](JavaWeb.assets/image-20230309094404067.png)
+
+##### **6 编写实体类**
+
+![image-20230309105751333](JavaWeb.assets/image-20230309105751333.png)
+
+​	ORM映射：表—类映射
+
+##### **7 编写基础公共类**
+
+​		1 数据库基础文件
+
+```properties
+driver = com.mysql.jdbc.Driver
+url = jdbc:mysql://localhost:3306?useUnicode=true
+user = root
+password = root
+```
+
+​		2 编写数据库的公共类
+
+```java
+//操作数据库的公共类
+public class BaseDao {
+    private static String driver;
+    private static String url;
+    private static String username;
+    private static String password;
+
+    //静态代码块，类加载的时候就初始化了
+    static {
+        Properties properties = new Properties();
+        //通过类加载器读取对应的资源
+        InputStream is = BaseDao.class.getClassLoader().getResourceAsStream("db.properties");
+
+        try {
+            properties.load(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        driver = properties.getProperty("driver");
+        driver = properties.getProperty("url");
+        driver = properties.getProperty("username");
+        driver = properties.getProperty("password");
+
+    }
+
+    //获取数据库的连接
+    public static Connection getConnection(){
+        Connection connection = null;
+        try {
+            Class.forName(driver);
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+
+    //编写查询公共类
+    public static ResultSet execute(Connection connection,String sql,Object[] params,ResultSet resultSet,PreparedStatement preparedStatement) throws SQLException {
+        //预编译的sql，在后面直接执行就可以了
+        preparedStatement = connection.prepareStatement(sql);
+        for (int i = 0; i < params.length; i++) {
+            //setObject 占位符从1开始，但是数组是从0开始，i+1
+            preparedStatement.setObject(i+1,params[i]);
+        }
+        resultSet = preparedStatement.executeQuery(sql);
+        return resultSet;
+    }
+
+    //编写增 删 改 公共方法
+    public static int execute(Connection connection,String sql,Object[] params,PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement = connection.prepareStatement(sql);
+        for (int i = 0; i < params.length; i++) {
+            //setObject 占位符从1开始，但是数组是从0开始，i+1
+            preparedStatement.setObject(i+1,params[i]);
+        }
+        int updateRows = preparedStatement.executeUpdate(sql);
+        return updateRows;
+    }
+
+    //释放资源
+    public static boolean closeResource(Connection connection,PreparedStatement preparedStatement,ResultSet resultSet){
+        boolean flag = true;
+
+        if (resultSet != null){
+            try {
+                resultSet.close();
+                // GC回收
+                resultSet = null;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            flag = false;
+        }
+        if (preparedStatement != null){
+            try {
+                preparedStatement.close();
+                // GC回收
+                preparedStatement = null;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            flag = false;
+        }
+
+        if (connection != null){
+            try {
+                connection.close();
+                // GC回收
+                connection = null;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            flag = false;
+        }
+        return flag;
+    }
+}
+
+```
+
+​	3 编写字符编码过滤器
+
+```java
+public class CharacterEncodingFilter implements Filter {
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        servletRequest.setCharacterEncoding("utf-8");
+        servletResponse.setCharacterEncoding("utf-8");
+
+        filterChain.doFilter(servletRequest,servletResponse);
+    }
+
+    public void destroy() {
+
+    }
+}
+```
+
+##### 8 导入静态资源
+
+![image-20230309105738841](JavaWeb.assets/image-20230309105738841.png)
+
+
+
+#### 14.2 登录功能实现
+
+![image-20230309110042268](JavaWeb.assets/image-20230309110042268.png)
+
+
+
+##### 1 编写前端页面
+
+![image-20230309110414741](JavaWeb.assets/image-20230309110414741.png)
+
+##### 2 设置首页
+
+```xml
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+```
+
+##### 3 编写dao层登录用户登录的接口
+
+```java
+public interface UserDao {
+    //得到要登录的用户
+
+    public User getLoginUser(Connection connection,String userCode) throws SQLException;
+}
+```
+
+
+
+##### 4 编写Dao接口的实现类
+
+```java
+public class UserDaoimpl implements UserDao {
+    public User getLoginUser(Connection connection, String userCode) throws SQLException {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        User user = null;
+
+        if (connection != null) {
+            String sql = "select * from smbms_user where userCode=?";
+            Object[] params = {userCode};
+
+
+            rs = BaseDao.execute(connection, sql, params, rs, pstm);
+
+            if (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUserCode(rs.getString("userCode"));
+                user.setUserName(rs.getString("userName"));
+                user.setUserPassword(rs.getString("userPassword"));
+                user.setGender(rs.getInt("gender"));
+                user.setBirthday(rs.getDate("birthday"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
+                user.setUserRole(rs.getInt("userRole"));
+                user.setCreatedBy(rs.getInt("craetedBy"));
+                user.setCreationDate(rs.getDate("creationDate"));
+                user.setModifyBy(rs.getInt("creationDate"));
+                user.setModifyDate(rs.getDate("modifyDate"));
+
+            }
+            BaseDao.closeResource(null, pstm, rs);
+        }
+        return user;
+    }
+}
+
+```
+
+##### 5 业务层接口
+
+```java
+public interface UserService {
+
+    //用户登录
+    public User login(String usercode,String password);
+
+}
+```
+
+
+
+##### 6 业务层实现类
+
+```java
+public class UserServiceImpl implements UserService{
+    // 业务层都会调用dao层，所以我们要引入Dao层
+    private UserDao userDao;
+    public UserServiceImpl(){
+        userDao = new UserDaoimpl();
+    }
+    public User login(String usercode, String password) {
+        Connection connection = null;
+        User user = null;
+        try {
+            connection = BaseDao.getConnection();
+            // 通过业务层调用对应的具体的数据库操作
+            user=userDao.getLoginUser(connection,usercode);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            BaseDao.closeResource(connection,null,null);
+        }
+    return user;
+    }
+/*    @Test
+    public void test(){
+        UserServiceImpl userServiceimpl = new UserServiceImpl();
+        User admin = userServiceimpl.login("admin","1234567");
+        System.out.println(admin.getUserPassword());
+    }*/
+
+
+}
+```
+
+##### 7 编写Servlet
+
+```java
+public class LoginServlet extends HttpServlet {
+    //Servlet 控制层，调用业务层代码
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("LoginServlet--start.....");
+
+        //获取用户名和密码
+        String userCode = req.getParameter("userCode");
+        String userPassword = req.getParameter("userPassword");
+        //和数据库中的密码进行对比，调用业务层
+        UserServiceImpl userService = new UserServiceImpl();
+        User user = userService.login(userCode, userPassword);  //这里已经把登录的人查出来了
+
+        if (user != null&& user.getUserPassword().equals(userPassword)){  //查有此人，可以登录
+            //将用户的信息放入Session中
+            req.getSession().setAttribute(Constants.USER_SESSION,user);
+
+            //跳转到内部主页
+            resp.sendRedirect("jsp/frame.jsp");
+        }else { //查无此人，无法登陆，转发回登录页面，顺带提示它用户名或者密码错误
+            req.setAttribute("error","用户名或者密码不正确");
+            req.getRequestDispatcher("login.jsp").forward(req,resp);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}
+```
+
+##### 8 注册Servlet
+
+```xml
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.lk.servlet.user.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login.do</url-pattern>
+    </servlet-mapping>
+```
+
+##### 9 测试访问
+
+<img src="JavaWeb.assets/image-20230309201646972.png" alt="image-20230309201646972" style="zoom:67%;" />
+
+#### 14.3 登录功能优化
+
+==注销功能==
+
+思路：移除Session。返回登录页面
+
+```java
+public class LogoutServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //移除用户session
+        req.getSession().removeAttribute(Constants.USER_SESSION);
+        resp.sendRedirect("/login.jsp");  //返回登录页面
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+}
+```
+
+
+
+注册 
+
+```xml
+<servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.lk.servlet.user.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/jsp/logout.do</url-pattern>
+    </servlet-mapping>
+```
+
+==登录拦截优化==
+
+编写一个过滤器并注册
+
+```java
+public class SysFilter implements Filter {
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
+        //过滤器，从Session中获取用户
+        User user = (User) request.getSession().getAttribute(Constants.USER_SESSION);
+
+        if (user ==null){ //已经被移除或者注销了，或者未登录
+            response.sendRedirect("/smbms/error.jsp");
+
+        }else {
+            filterChain.doFilter(req,resp);
+        }
+    }
+
+    public void destroy() {
+
+    }
+}
+```
+
+过滤器
+
+```xml
+    <filter>
+        <filter-name>SysFilter</filter-name>
+        <filter-class>com.lk.filter.SysFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SysFilter</filter-name>
+        <url-pattern>/jsp/*</url-pattern>
+    </filter-mapping>
+```
+
