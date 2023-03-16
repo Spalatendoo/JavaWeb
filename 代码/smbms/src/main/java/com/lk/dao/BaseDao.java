@@ -55,13 +55,13 @@ public class BaseDao {
     }
 
     //编写增 删 改 公共方法
-    public static int execute(Connection connection,String sql,Object[] params,PreparedStatement preparedStatement) throws SQLException {
+    public static int execute(Connection connection,PreparedStatement preparedStatement,String sql,Object[] params) throws SQLException {
         preparedStatement = connection.prepareStatement(sql);
         for (int i = 0; i < params.length; i++) {
             //setObject 占位符从1开始，但是数组是从0开始，i+1
             preparedStatement.setObject(i+1,params[i]);
         }
-        int updateRows = preparedStatement.executeUpdate(sql);
+        int updateRows = preparedStatement.executeUpdate();
         return updateRows;
     }
 

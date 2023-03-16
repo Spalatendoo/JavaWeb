@@ -3300,7 +3300,7 @@ public class LoginServlet extends HttpServlet {
 
 #### 14.3 登录功能优化
 
-==注销功能==
+##### 注销功能
 
 思路：移除Session。返回登录页面
 
@@ -3335,7 +3335,7 @@ public class LogoutServlet extends HttpServlet {
     </servlet-mapping>
 ```
 
-==登录拦截优化==
+##### 登录拦截优化
 
 编写一个过滤器并注册
 
@@ -3376,5 +3376,120 @@ public class SysFilter implements Filter {
         <filter-name>SysFilter</filter-name>
         <url-pattern>/jsp/*</url-pattern>
     </filter-mapping>
+```
+
+##### 密码修改
+
+1 导入前端素材
+
+```jsp
+<li><a href="${pageContext.request.contextPath }/jsp/pwdmodify.jsp">密码修改</a></li>
+```
+
+2 项目从底层向上写
+
+<img src="JavaWeb.assets/image-20230316095533723.png" alt="image-20230316095533723" style="zoom:67%;" />
+
+3 UserDao
+
+```java
+ public int updatePwd(Connection connection,int id,int password) throws SQLException;
+```
+
+4 UserDao 接口实现类
+
+```java
+public int updatePwd(Connection connection,int id, int password) throws SQLException{
+        PreparedStatement pstm = null;
+        int execute = 0;
+        if (connection != null){
+        String sql = "update smbms_user set userPassword = ? where id = ?";
+        Object params[] = {password,id};
+        execute = BaseDao.execute(connection, sql, params, pstm);
+        BaseDao.closeResource(connection,pstm,null);
+        }
+        return execute;
+    }
+}
+```
+
+5 UserService层
+
+```java
+public boolean updatePwd( int id, int password) throws SQLException;
+```
+
+6 UserService实现类
+
+```java
+    public boolean updatePwd(int id, int password) throws SQLException {
+        Connection connection = null;
+        boolean flag = false;
+        connection = BaseDao.getConnection();
+
+        //修改密码
+        if (userDao.updatePwd(connection,id,password)>0){
+            flag = true;
+        }
+        BaseDao.closeResource(connection,null,null);
+        return flag;
+    }
+```
+
+7 UserServlet（此处注册省略）
+
+==实现复用，需要提取出方法==
+
+```java
+//实现Servlet复用
+public class UserServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String method = req.getParameter("method");
+        if (method.equals("savepwd") && method != null){
+            this.updatePwd(req,resp);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+
+    //通过封装 实现Servlet复用
+    public void updatePwd(HttpServletRequest req, HttpServletResponse resp){
+        //从Session里面拿ID
+        Object o = req.getSession().getAttribute(Constants.USER_SESSION);
+        String newpassword = req.getParameter("newpassword");
+
+        System.out.println("UserServlet" + newpassword);
+
+        boolean flag = false;
+        if (o != null && !StringUtils.isNullOrEmpty(newpassword)){
+            UserServiceImpl userService = new UserServiceImpl();
+
+            flag = userService.updatePwd(((User) o).getId(), newpassword);
+            if (flag){
+                req.setAttribute("message","修改成功");
+                //密码修改成功，移除当前Session
+                req.getSession().removeAttribute(Constants.USER_SESSION);
+            }else {
+                //密码修改失败
+                req.setAttribute("message","修改失败");
+            }
+
+
+        }else {
+            req.setAttribute("message","新密码有问题");
+        }
+        try {
+            req.getRequestDispatcher("pwdmodify.jsp").forward(req,resp);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
 ```
 
