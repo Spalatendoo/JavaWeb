@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserServiceImpl implements UserService{
     // 业务层都会调用dao层，所以我们要引入Dao层
@@ -55,5 +56,54 @@ public class UserServiceImpl implements UserService{
         }
 
         return flag;
+    }
+
+    //查询记录数
+    public int getUserCount(String username,int userRole){
+        Connection connection = null;
+        int count = 0;
+
+        try {
+            connection = BaseDao.getConnection();
+            count = userDao.getUserCount(connection, username, userRole);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            BaseDao.closeResource(connection, null,null );
+        }
+        return count;
+    }
+
+/*
+    @Test
+    public void test(){
+        UserServiceImpl userService = new UserServiceImpl();
+        int userCount = userService.getUserCount(null,1);
+        System.out.println(userCount);
+    }
+ */
+
+//根据条件查询用户表
+    @Override
+    public List<User> getUserList(String queryUserName, int queryUserRole, int currentPageNo, int pagesize) {
+        Connection connection = null;
+        List<User> userList = null;
+
+        System.out.println("queryUserName ------>" + queryUserName);
+        System.out.println("queryUserRole ------>" + queryUserRole);
+        System.out.println("currentPageNo ------>" + currentPageNo);
+        System.out.println("pagesize ------>" + pagesize);
+
+        connection = BaseDao.getConnection();
+        try {
+            connection = BaseDao.getConnection();
+            userList = userDao.getUserList(connection, queryUserName, queryUserRole, currentPageNo, pagesize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            BaseDao.closeResource(connection,null,null);
+        }
+
+        return userList;
     }
 }

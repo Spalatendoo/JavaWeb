@@ -3380,23 +3380,23 @@ public class SysFilter implements Filter {
 
 ##### 密码修改
 
-1 导入前端素材
+**1 导入前端素材**
 
 ```jsp
 <li><a href="${pageContext.request.contextPath }/jsp/pwdmodify.jsp">密码修改</a></li>
 ```
 
-2 项目从底层向上写
+**2 项目从底层向上写**
 
 <img src="JavaWeb.assets/image-20230316095533723.png" alt="image-20230316095533723" style="zoom:67%;" />
 
-3 UserDao
+**3 UserDao**
 
 ```java
  public int updatePwd(Connection connection,int id,int password) throws SQLException;
 ```
 
-4 UserDao 接口实现类
+**4 UserDao 接口实现类**
 
 ```java
 public int updatePwd(Connection connection,int id, int password) throws SQLException{
@@ -3413,13 +3413,13 @@ public int updatePwd(Connection connection,int id, int password) throws SQLExcep
 }
 ```
 
-5 UserService层
+**5 UserService层**
 
 ```java
 public boolean updatePwd( int id, int password) throws SQLException;
 ```
 
-6 UserService实现类
+**6 UserService实现类**
 
 ```java
     public boolean updatePwd(int id, int password) throws SQLException {
@@ -3489,6 +3489,296 @@ public class UserServlet extends HttpServlet {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+}
+```
+
+##### 优化密码修改（使用Ajax）
+
+```java
+ // 验证旧密码，session中有用户的密码
+    public void pwdModify(HttpServletRequest req,HttpServletResponse resp){
+        //从Session里面拿ID
+        Object o = req.getSession().getAttribute(Constants.USER_SESSION);
+        String oldpassword = req.getParameter("oldpassword");
+// 万能Map :结果集
+        HashMap<String,String> resultMap = new HashMap<String,String>();
+
+        if (o == null){ //Session 失效/过期了
+            resultMap.put("result","sessionerror");
+        }else if (StringUtils.isNullOrEmpty(oldpassword)){ //输入的密码为空
+            resultMap.put("result","error");
+        }else {
+            String userPassword = ((User) o).getUserPassword(); //Session 中用户的密码
+            if (oldpassword.equals(userPassword)){
+                resultMap.put("result","true");
+            }else {
+                resultMap.put("result","false");
+            }
+        }
+
+
+        try {
+            resp.setContentType("application/json");
+            PrintWriter writer = resp.getWriter();
+            //JSONArray 阿里巴巴的JSON工具类，转换格式
+            /*
+            resultMap = ["result","sessionerror","result","error"]
+            Json格式 = {key,value}
+            */
+            writer.write(JSONArray.toJSONString(resultMap));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+```
+
+#### 14.4 用户管理实现
+
+![image-20230318101842641](JavaWeb.assets/image-20230318101842641.png)
+
+1 导入分页的工具类
+
+2 用户列表页面导入
+
+##### 3 获取用户数量
+
+==UserDao==
+
+```java
+    //查询用户总数
+    public int getUserCount(Connection connection,String username,int userRole) throws SQLException;
+
+```
+
+==UserDaoImpl==
+
+```java
+public int getUserCount(Connection connection,String username,int userRole)throws SQLException{
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        int count = 0;
+
+        if (connection!=null){
+            StringBuffer sql = new StringBuffer();
+            sql.append("select count(1) as count from smbms_user u ,smbms_role r where u.userRole = r.id");
+            ArrayList<Object> list = new ArrayList<Object>();//存放参数
+
+            if (!StringUtils.isNullOrEmpty(username)){
+                sql.append(" and u.username like ?");
+                list.add("%"+username+"%"); //index: 0
+
+            }
+
+            if (userRole > 0 ){
+                sql.append(" and u.userRole = ?");
+                list.add(userRole);  //index:1
+            }
+            //把list转换为数组
+            Object[] params = list.toArray();
+            System.out.println("UserDaoImpl -> getUserCount" + sql.toString());   //输出最后完整的sql语句
+
+            rs  = BaseDao.execute(connection, sql.toString(), params, rs, pstm);
+            if (rs.next()){
+                count = rs.getInt("count");  //从结果集中获取最终的数量
+            }
+            BaseDao.closeResource(null,pstm,rs);
+
+        }
+    return count;
+    }
+```
+
+==UserService==
+
+```java
+    //查询记录数
+    public int getUserCount(String username,int userRole);
+```
+
+
+
+==UserServiceImpl==
+
+```java
+    public int getUserCount(String username,int userRole){
+        Connection connection = null;
+        int count = 0;
+
+        try {
+            connection = BaseDao.getConnection();
+            count = userDao.getUserCount(connection, username, userRole);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            BaseDao.closeResource(connection, null,null );
+        }
+        return count;
+    }
+```
+
+##### 4 获取用户列表
+
+==UserDao==
+
+```java
+    //获取用户列表
+    List<User> getUserList(Connection con, String userName, int userRole, int currentPageNo, int pageSize) throws Exception;
+```
+
+==UserDaoImpl==
+
+```java
+    //获取用户列表
+    @Override
+    public List<User> getUserList(Connection connection, String username, int userRole, int currentPageNo, int pageSize) throws Exception {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        List<User> userList = new ArrayList<User>();
+        if (connection != null){
+            StringBuffer sql = new StringBuffer();
+            sql.append("select u.*,r.roleName as userRoleName from smbms_user u ,smbms_role r where u.userRole=r.id");
+            ArrayList<Object> list = new ArrayList<>();  //存放参数
+            if (! StringUtils.isNullOrEmpty(username)) {
+                sql.append(" and u.userName like ?");
+                list.add("%" + username + "%");
+            }
+            if (userRole >0) {
+                sql.append(" and u.userRole = ?");
+                list.add(userRole);
+            }
+            // 在Mysql数据库中，分页使用 limit startIndex pageSize; 总数
+            sql.append(" order by creationDate DESC limit ?,?");
+            currentPageNo = (currentPageNo - 1) * pageSize;
+
+            list.add(currentPageNo);
+            list.add(pageSize) ;
+
+            Object[] params = list.toArray();
+
+            rs = BaseDao.execute(connection, sql.toString(), params, rs, pstm);
+
+            while (rs.next()){
+                User _user = new User();
+                _user.setId(rs.getInt("id"));
+                _user.setUserCode(rs.getString("userCode"));
+                _user.setUserName(rs.getString("userName"));
+                _user.setGender(rs.getInt("gender"));
+                _user.setBirthday(rs.getDate("birthday"));
+                _user.setPhone(rs.getString("phone"));
+                _user.setUserRole(rs.getInt("userRole"));
+                _user.setUserRoleName(rs.getString("userRoleName"));
+                userList.add(_user);
+            }
+            BaseDao.closeResource(null,pstm,rs);
+        }
+        return userList;
+    }
+```
+
+==UserService==
+
+```java
+    //根据条件查询用户表
+    public List<User> getUserList(String queryUserName,int queryUserRole,int currentPageNo,int pagesize);
+```
+
+==UserServiceImpl==
+
+```java
+    @Override
+    public List<User> getUserList(String queryUserName, int queryUserRole, int currentPageNo, int pagesize) {
+        Connection connection = null;
+        List<User> userList = null;
+
+        System.out.println("queryUserName ------>" + queryUserName);
+        System.out.println("queryUserRole ------>" + queryUserRole);
+        System.out.println("currentPageNo ------>" + currentPageNo);
+        System.out.println("pagesize ------>" + pagesize);
+
+        connection = BaseDao.getConnection();
+        try {
+            connection = BaseDao.getConnection();
+            userList = userDao.getUserList(connection, queryUserName, queryUserRole, currentPageNo, pagesize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            BaseDao.closeResource(connection,null,null);
+        }
+
+        return userList;
+    }
+```
+
+##### 5 获取角色操作
+
+`为了职责统一，可以把角色的操作单独放在一个包中，和POJO类对应`
+
+==RoleDao==
+
+```java
+    public List<Role> getRoleList(Connection connection) throws SQLException;
+```
+
+==RoleDaoImpl==
+
+```java
+    @Override
+    public List<Role> getRoleList(Connection connection) throws SQLException {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        ArrayList<Role> rolelist = new ArrayList<>();
+
+        if (connection != null){
+            String sql ="select * from smbms_role";
+            Object[] params = {};
+
+            rs = BaseDao.execute(connection, sql, params, rs, pstm);
+
+            while (rs.next()){
+                Role _role = new Role();
+                _role.setId(rs.getInt("id"));
+                _role.setRoleName(rs.getString("roleName"));
+                _role.setRoleCode(rs.getString("roleCode"));
+                rolelist.add(_role);
+            }
+            BaseDao.closeResource(null,pstm,rs);
+        }
+        return rolelist;
+    }
+```
+
+==RoleService==
+
+```java
+    public List<Role> getRoleList() ;
+```
+
+==RoleServiceImpl==
+
+```java
+public class RoleServiceimpl implements RoleService{
+    // 引入Dao
+    private RoleDao roleDao;
+    public RoleServiceimpl() {
+        roleDao = new RoleDaoimpl();
+    }
+    @Override
+    public List<Role> getRoleList()  {
+        Connection connection = null;
+        List<Role> roleList = null;
+
+        try {
+            connection = BaseDao.getConnection();
+            roleList = roleDao.getRoleList(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            BaseDao.closeResource(connection,null,null);
+        }
+        return roleList;
     }
 }
 ```

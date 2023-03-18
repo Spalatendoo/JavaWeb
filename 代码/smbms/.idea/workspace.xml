@@ -10,22 +10,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6ddcf143-1c12-471d-a0e1-aa19c7f58194" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/servlet/user/UserServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_66.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/dao/Role/RoleDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/dao/Role/RoleDaoimpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/service/role/RoleService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lk/service/role/RoleServiceimpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../test/test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../JavaWeb.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../JavaWeb.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../smbms-master/smbms-master/src/main/java/com/princehan/servlet/util/PageSupport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/util/PageSupport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/smbms_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/smbms_war_exploded.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8cd9d288-89df-47da-add4-d291d6c5b108.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8cd9d288-89df-47da-add4-d291d6c5b108/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8cd9d288-89df-47da-add4-d291d6c5b108/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8cd9d288-89df-47da-add4-d291d6c5b108/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8cd9d288-89df-47da-add4-d291d6c5b108/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/dao/BaseDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/dao/BaseDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smbms.iml" beforeDir="false" afterPath="$PROJECT_DIR$/smbms.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/dao/User/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/dao/User/UserDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/dao/User/UserDaoimpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/dao/User/UserDaoimpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/service/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/service/user/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/service/user/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/service/user/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lk/servlet/user/UserServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lk/servlet/user/UserServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/pwdmodify.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/pwdmodify.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/dao/BaseDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/dao/BaseDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/dao/User/UserDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/dao/User/UserDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/dao/User/UserDaoimpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/dao/User/UserDaoimpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/filter/CharacterEncodingFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/filter/CharacterEncodingFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/filter/SysFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/filter/SysFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/pojo/Bill.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/pojo/Bill.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/pojo/Provider.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/pojo/Provider.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/pojo/Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/pojo/Role.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/pojo/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/pojo/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/pojo/address.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/pojo/address.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/service/user/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/service/user/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/service/user/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/service/user/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/servlet/user/LoginServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/servlet/user/LoginServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/servlet/user/LogoutServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/servlet/user/LogoutServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/servlet/user/UserServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/servlet/user/UserServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lk/util/Constants.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lk/util/Constants.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/smbms.war" beforeDir="false" afterPath="$PROJECT_DIR$/target/smbms.war" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/smbms/WEB-INF/classes/com/lk/servlet/user/UserServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/smbms/WEB-INF/classes/com/lk/servlet/user/UserServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/smbms/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/smbms/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/smbms/js/pwdmodify.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/smbms/js/pwdmodify.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,10 +110,41 @@
       <recent name="E:\LearningNotes\JAVA前端\javaweb\代码\smbms\src\main\webapp" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\LearningNotes\JAVA前端\javaweb\代码\smbms\src\main\java\com\lk\util" />
+      <recent name="E:\LearningNotes\JAVA前端\javaweb\代码\smbms\src\main\java\com\lk\tools" />
       <recent name="E:\LearningNotes\JAVA前端\javaweb\代码\smbms\src\main\webapp\jsp" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.71">
+  <component name="RunManager" selected="JUnit.RoleServiceimpl.test">
+    <configuration name="test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lk.util.test" />
+      <module name="smbms" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lk.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RoleServiceimpl.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="smbms" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lk.service.role.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lk.service.role" />
+      <option name="MAIN_CLASS_NAME" value="com.lk.service.role.RoleServiceimpl" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="UserServiceImpl" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="smbms" />
       <extension name="coverage">
@@ -133,22 +187,6 @@
       <option name="PACKAGE_NAME" value="com.lk.service.user" />
       <option name="MAIN_CLASS_NAME" value="com.lk.service.user.UserServiceimpl" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UserServiceimpl.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="smbms" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lk.service.user.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lk.service.user" />
-      <option name="MAIN_CLASS_NAME" value="com.lk.service.user.UserServiceimpl" />
-      <option name="METHOD_NAME" value="test" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -241,18 +279,20 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.test" />
+      <item itemvalue="JUnit.RoleServiceimpl.test" />
       <item itemvalue="JUnit.UserServiceImpl" />
       <item itemvalue="JUnit.UserServiceImpl.test" />
       <item itemvalue="JUnit.UserServiceimpl" />
-      <item itemvalue="JUnit.UserServiceimpl.test" />
       <item itemvalue="Tomcat Server.Tomcat 9.0.71" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RoleServiceimpl.test" />
         <item itemvalue="JUnit.UserServiceImpl.test" />
+        <item itemvalue="Application.test" />
         <item itemvalue="JUnit.UserServiceImpl" />
         <item itemvalue="JUnit.UserServiceimpl" />
-        <item itemvalue="JUnit.UserServiceimpl.test" />
       </list>
     </recent_temporary>
   </component>
@@ -267,6 +307,7 @@
       <workItem from="1678322995235" duration="22147000" />
       <workItem from="1678861347855" duration="3180000" />
       <workItem from="1678929638814" duration="23655000" />
+      <workItem from="1679101851155" duration="19307000" />
     </task>
     <servers />
   </component>
