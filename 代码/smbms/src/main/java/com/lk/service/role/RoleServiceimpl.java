@@ -34,13 +34,14 @@ public class RoleServiceimpl implements RoleService{
     }
 
 
-/*    @Test
+    @Test
     public void test(){
         RoleServiceimpl roleServiceimpl = new RoleServiceimpl();
         List<Role> roleList = roleServiceimpl.getRoleList();
         for (Role role : roleList) {
             System.out.println(role.getRoleName());
             System.out.println(role.getRoleCode());
+            System.out.println(role.getId());
         }
-    }*/
+    }
 }

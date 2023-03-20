@@ -4,6 +4,7 @@ import com.lk.dao.BaseDao;
 import com.lk.pojo.Role;
 import com.lk.pojo.User;
 import com.mysql.jdbc.StringUtils;
+import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -90,7 +91,7 @@ public class UserDaoimpl implements UserDao {
             }
             //把list转换为数组
             Object[] params = list.toArray();
-            System.out.println("UserDaoImpl -> getUserCount" + sql.toString());   //输出最后完整的sql语句
+            System.out.println("UserDaoImpl -> getUserCount " + sql.toString());   //输出最后完整的sql语句
 
             rs  = BaseDao.execute(connection, sql.toString(), params, rs, pstm);
             if (rs.next()){
@@ -133,21 +134,23 @@ public class UserDaoimpl implements UserDao {
             rs = BaseDao.execute(connection, sql.toString(), params, rs, pstm);
 
             while (rs.next()){
-                User _user = new User();
-                _user.setId(rs.getInt("id"));
-                _user.setUserCode(rs.getString("userCode"));
-                _user.setUserName(rs.getString("userName"));
-                _user.setGender(rs.getInt("gender"));
-                _user.setBirthday(rs.getDate("birthday"));
-                _user.setPhone(rs.getString("phone"));
-                _user.setUserRole(rs.getInt("userRole"));
-                _user.setUserRoleName(rs.getString("userRoleName"));
-                userList.add(_user);
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUserCode(rs.getString("userCode"));
+                user.setUserName(rs.getString("userName"));
+                user.setGender(rs.getInt("gender"));
+                user.setBirthday(rs.getDate("birthday"));
+                user.setPhone(rs.getString("phone"));
+                user.setUserRole(rs.getInt("userRole"));
+                user.setUserRoleName(rs.getString("userRoleName"));
+                userList.add(user);
             }
             BaseDao.closeResource(null,pstm,rs);
         }
         return userList;
     }
+
+
 
 
 }

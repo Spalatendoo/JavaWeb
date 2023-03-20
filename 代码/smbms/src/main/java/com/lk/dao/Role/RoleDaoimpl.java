@@ -16,7 +16,7 @@ public class RoleDaoimpl implements RoleDao{
     public List<Role> getRoleList(Connection connection) throws SQLException {
         PreparedStatement pstm = null;
         ResultSet rs = null;
-        ArrayList<Role> rolelist = new ArrayList<>();
+        ArrayList<Role> rolelist = new ArrayList<Role>();
 
         if (connection != null){
             String sql ="select * from smbms_role";
@@ -25,11 +25,11 @@ public class RoleDaoimpl implements RoleDao{
             rs = BaseDao.execute(connection, sql, params, rs, pstm);
 
             while (rs.next()){
-                Role _role = new Role();
-                _role.setId(rs.getInt("id"));
-                _role.setRoleName(rs.getString("roleName"));
-                _role.setRoleCode(rs.getString("roleCode"));
-                rolelist.add(_role);
+                Role role = new Role();
+                role.setId(rs.getInt("id"));
+                role.setRoleName(rs.getString("roleName"));
+                role.setRoleCode(rs.getString("roleCode"));
+                rolelist.add(role);
             }
             BaseDao.closeResource(null,pstm,rs);
         }

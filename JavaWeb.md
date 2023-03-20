@@ -536,6 +536,34 @@ web-app 版本为4.0
   metadata-complete="true">
 ```
 
+maven由于约定大于配置，之后会遇到自己写的配置文件，无法被导出或者生效的问题，解决方案
+
+```xml
+<!--在build中配置resources，防止资源导出失败的问题-->
+<build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+```
+
+
+
 + maven仓库的使用
   + 地址：https://mvnrepository.com/
   + ![image-20230218154920001](JavaWeb.assets/image-20230218154920001.png)
@@ -3781,5 +3809,93 @@ public class RoleServiceimpl implements RoleService{
         return roleList;
     }
 }
+```
+
+```java
+ //重点，处理请求
+    public void query(HttpServletRequest req, HttpServletResponse resp) throws ServletException{
+        //查询用户列表
+
+        //从前端获取数据
+        String queryUserName = req.getParameter("queryname");
+        System.out.println(queryUserName);
+        String temp = req.getParameter("queryUserRole"); //queryUserRole
+        System.out.println(temp);
+        String pageIndex = req.getParameter("pageIndex");
+        System.out.println(pageIndex);
+
+        int queryUserRole = 0;
+
+        //获取用户列表
+        UserServiceImpl userService = new UserServiceImpl();
+        List<User> userList = null;
+
+        //第一次走这个请求，一定是第一页，页面大小是固定的
+        int pageSize = 5; //可以把这个写到配置文件中，方便后期修改
+        int currentPageNo = 1;
+
+        if (queryUserName == null){
+            queryUserName = "";
+        }
+        if (temp != null && !temp.equals("")){
+            queryUserRole = Integer.parseInt(temp);  //给查询赋值 0，1，2
+        }
+        if (pageIndex !=null){
+            try{
+                currentPageNo = Integer.parseInt(pageIndex);
+            }catch (Exception e){
+                try {
+                    resp.sendRedirect("error.jsp");
+                } catch (IOException ex) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        //获取用户总数(分页：   上一页，下一页)
+        int totalCount = userService.getUserCount(queryUserName, queryUserRole);
+        //总页数支持
+        PageSupport pageSupport = new PageSupport();
+        pageSupport.setCurrentPageNo(currentPageNo);
+        pageSupport.setPageSize(pageSize);
+        pageSupport.setTotalPageCount(totalCount);
+
+        int totalPageCount = ((int)(totalCount/pageSize)) + 1;
+
+        //控制首页和尾页
+        //如果页面要小于1了，就显示第一页的东西
+        if (totalPageCount < 1){
+            currentPageNo = 1;
+        }else if (currentPageNo>totalPageCount){ //当前页面大于了最后一页
+            currentPageNo = totalPageCount;
+        }
+
+        //获取用户列表展示
+        userList = userService.getUserList(queryUserName,queryUserRole,currentPageNo,pageSize);
+        req.setAttribute("userlist",userList);
+       
+
+
+        RoleServiceimpl roleService = new RoleServiceimpl();
+        List<Role> roleList = roleService.getRoleList();
+        req.setAttribute("rolelist",roleList);
+
+        req.setAttribute("totalCount",totalCount);
+        req.setAttribute("currentPageNo",currentPageNo);
+        req.setAttribute("totalPageCount",totalPageCount);
+        req.setAttribute("queryUserName",queryUserName);
+        req.setAttribute("queryUserRole",queryUserRole);
+
+        //返回前端
+
+        try {
+            req.getRequestDispatcher("userlist.jsp").forward(req,resp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 ```
 

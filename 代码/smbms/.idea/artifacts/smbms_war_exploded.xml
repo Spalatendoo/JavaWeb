@@ -20,6 +20,7 @@
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.47" />
           <element id="library" level="project" name="Maven: javax.servlet.jsp.jstl:jstl-api:1.2" />
           <element id="library" level="project" name="Maven: javax.servlet.jsp:jsp-api:2.1" />
+          <element id="library" level="project" name="Maven: org.glassfish.web:jstl-impl:1.2" />
           <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
           <element id="library" level="project" name="Maven: org.testng:testng:7.7.1" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.36" />

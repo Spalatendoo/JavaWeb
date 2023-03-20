@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService{
         System.out.println("currentPageNo ------>" + currentPageNo);
         System.out.println("pagesize ------>" + pagesize);
 
-        connection = BaseDao.getConnection();
+
         try {
             connection = BaseDao.getConnection();
             userList = userDao.getUserList(connection, queryUserName, queryUserRole, currentPageNo, pagesize);
@@ -106,4 +106,6 @@ public class UserServiceImpl implements UserService{
 
         return userList;
     }
+
+
 }
